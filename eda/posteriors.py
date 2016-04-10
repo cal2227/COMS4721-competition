@@ -4,14 +4,24 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
+def plot_posterior(df, column):
+    n = len(df)
+    plot = df[df['label'] == 1].groupby(column).size().divide(n) \
+        .sort_values(ascending=False).plot(kind='bar')
+    plot.set_ylim(0, 1)
+    fig = plot.get_figure()
+    fig.suptitle(column)
+    fig.savefig("posterior_plots/{}.png".format(column))
+
 def plot_posteriors(df):
     def apply_cols(df, func):
         for c in df.columns:
             func(df, c)
 
     def plot_posterior(df, column):
-        plot = df.filter(df['label'] == 1).groupby(column).size().divide(n) \
+        plot = df[df['label'] == 1].groupby(column).size().divide(n) \
             .sort_values(ascending=False).plot(kind='bar')
+        plot.set_ylim(0, 1)
         fig = plot.get_figure()
         fig.suptitle(column)
         fig.savefig("posterior_plots/{}.png".format(column))
@@ -31,8 +41,9 @@ def plot_posteriors_digest(df):
         
         cell.set_title(column)
         cell.get_xaxis().set_visible(False)
+        cell.set_ylim(0, 1)
 
-        df.filter(df['label'] == 1).groupby(column).size().divide(n) \
+        df[df['label'] == 1].groupby([column, 'label']).size().divide(n) \
             .sort_values(ascending=False).plot(ax=cell, kind='bar')
         
     n = len(df)
@@ -46,5 +57,6 @@ def plot_posteriors_digest(df):
 
 if __name__ == '__main__':   
     df = pd.read_csv("data/data.csv")
-    # plot_posteriors(df)
+    plot_posteriors(df)
     plot_posteriors_digest(df)
+    # plot_posterior(df, '16')
