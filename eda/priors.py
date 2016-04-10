@@ -10,11 +10,13 @@ def plot_priors(df):
             func(df, c)
 
     def plot_prior(df, column):
-        plot = df.groupby(column).size().divide(n) \
-            .sort_values(ascending=False).plot(kind='bar')
-        plot.set_ylim(0, 1)
-        fig = plot.get_figure()
-        fig.suptitle(column)
+        fig, ax = plt.subplots(nrows=1, ncols=1)
+        ax.set_title(column)
+        ax.set_ylim(0, 1)
+
+        df.groupby(column).size().divide(n) \
+            .sort_values(ascending=False).plot(kind='bar', ax=ax)
+
         fig.savefig("prior_plots/{}.png".format(column))
 
     n = len(df)
