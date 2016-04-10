@@ -10,9 +10,13 @@ def plot_frequencies(df):
             func(df, c)
 
     def plot_frequency(df, column):
-        plot = df.groupby(column).size().sort_values(ascending=False).plot(kind='bar')
-        fig = plot.get_figure()
-        fig.suptitle(column)
+        fig, ax = plt.subplots(nrows=1, ncols=1)
+        ax.set_title(column)
+        ax.set_ylim(0, 1)
+
+        df.groupby(column).size() \
+            .sort_values(ascending=False).plot(kind='bar', ax=ax)
+
         fig.savefig("frequency_plots/{}.png".format(column))
 
     apply_cols(df, plot_frequency)
