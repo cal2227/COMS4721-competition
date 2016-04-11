@@ -10,10 +10,13 @@ def plot_priors(df):
             func(df, c)
 
     def plot_prior(df, column):
-        plot = df.groupby(column).size().divide(n) \
-            .sort_values(ascending=False).plot(kind='bar')
-        fig = plot.get_figure()
-        fig.suptitle(column)
+        fig, ax = plt.subplots(nrows=1, ncols=1)
+        ax.set_title(column)
+        ax.set_ylim(0, 1)
+
+        df.groupby(column).size().divide(n) \
+            .sort_values(ascending=False).plot(kind='bar', ax=ax)
+
         fig.savefig("prior_plots/{}.png".format(column))
 
     n = len(df)
@@ -31,6 +34,7 @@ def plot_priors_digest(df):
         
         cell.set_title(column)
         cell.get_xaxis().set_visible(False)
+        cell.set_ylim(0, 1)
 
         df.groupby(column).size().divide(n) \
             .sort_values(ascending=False).plot(ax=cell, kind='bar')
