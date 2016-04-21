@@ -94,6 +94,7 @@ print ('test recall:', recall_score(y_test, test_preds))
 
 # $ time python nearest_neighbor.py 
 # features: 561
+# train_size: ? (0.2 or 0.8)
 # KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
 #            metric_params=None, n_jobs=1, n_neighbors=5, p=2,
 #            weights='uniform')
@@ -108,6 +109,7 @@ print ('test recall:', recall_score(y_test, test_preds))
 
 # $ time python nearest_neighbor.py 
 # features: 561
+# train_size: ? (0.2 or 0.8)
 # KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
 #            metric_params=None, n_jobs=1, n_neighbors=5, p=2,
 #            weights='uniform')
@@ -119,4 +121,21 @@ print ('test recall:', recall_score(y_test, test_preds))
 # user  2m17.479s
 # sys 0m13.738s
 
+
+# Currently running on my laptop:
+
+# $ time python nearest_neighbor.py 
+# features: 284
+# train_size: 0.2
+# KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
+#            metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+#            weights='uniform')
+
+
+# $ python nearest_neighbor.py 
+# features: 561
+# train_size: 0.2
+# KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
+#            metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+#            weights='uniform')
 
