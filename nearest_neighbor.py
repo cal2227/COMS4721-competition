@@ -69,7 +69,9 @@ for c in col_to_add:
 df_one_hot_quiz = df_one_hot_quiz[df_one_hot.columns]
 
 # Split data to train/test
-X_train, X_test, y_train, y_test = train_test_split(df_one_hot, df_y, random_state=1, train_size=0.8)
+train_size = 0.8
+print ("train_size:", train_size)
+X_train, X_test, y_train, y_test = train_test_split(df_one_hot, df_y, random_state=1, train_size=train_size)
 
 knn = KNeighborsClassifier()
 print (knn)
