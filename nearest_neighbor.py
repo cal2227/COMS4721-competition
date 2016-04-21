@@ -31,19 +31,19 @@ for col in cols_to_delete:
 
 # B
 # Test on just these pairs of features [0-8], [9-17]
-# cols_to_keep = ['0', '2', '5', '7', '8', '9', '11', '14', '16', '17']
-# for col in [col for col in df.columns if col not in cols_to_keep]:
-#     del df[col]
-#     del df_quiz[col]
+cols_to_keep = ['0', '2', '5', '7', '8', '9', '11', '14', '16', '17']
+for col in [col for col in df.columns if col not in cols_to_keep]:
+    del df[col]
+    del df_quiz[col]
 
 
 # C
 # Normalize the continuous columns (if not removed in B)
-df['59'] = (df['59'] - df['59'].mean()) /  (df['59'].max() - df['59'].min())
-df['60'] = (df['60'] - df['60'].mean()) /  (df['60'].max() - df['60'].min())
+# df['59'] = (df['59'] - df['59'].mean()) /  (df['59'].max() - df['59'].min())
+# df['60'] = (df['60'] - df['60'].mean()) /  (df['60'].max() - df['60'].min())
 
-df_quiz['59'] = (df_quiz['59'] - df_quiz['59'].mean()) /  (df_quiz['59'].max() - df_quiz['59'].min())
-df_quiz['60'] = (df_quiz['60'] - df_quiz['60'].mean()) /  (df_quiz['60'].max() - df_quiz['60'].min())
+# df_quiz['59'] = (df_quiz['59'] - df_quiz['59'].mean()) /  (df_quiz['59'].max() - df_quiz['59'].min())
+# df_quiz['60'] = (df_quiz['60'] - df_quiz['60'].mean()) /  (df_quiz['60'].max() - df_quiz['60'].min())
 
 
 # Define categorical columns
@@ -142,7 +142,6 @@ print ('test recall:', recall_score(y_test, test_preds))
 
 # Currently running on my laptop:
 
-
 # $ python nearest_neighbor.py 
 # features: 561
 # train_size: 0.2
@@ -150,3 +149,10 @@ print ('test recall:', recall_score(y_test, test_preds))
 #            metric_params=None, n_jobs=1, n_neighbors=5, p=2,
 #            weights='uniform')
 
+
+# $ time python nearest_neighbor.py 
+# features: 284
+# train_size: 0.8
+# KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
+#            metric_params=None, n_jobs=1, n_neighbors=5, p=2,
+#            weights='uniform')
