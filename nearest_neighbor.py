@@ -122,14 +122,25 @@ print ('test recall:', recall_score(y_test, test_preds))
 # sys 0m13.738s
 
 
-# Currently running on my laptop:
-
 # $ time python nearest_neighbor.py 
 # features: 284
 # train_size: 0.2
 # KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',
 #            metric_params=None, n_jobs=1, n_neighbors=5, p=2,
 #            weights='uniform')
+# train accuracy: 0.911972247408
+# train precision: 0.894681318681
+# train recall: 0.907688191224
+# test accuracy: 0.877076968562
+# test precision: 0.848057766758
+# test recall: 0.876638413633
+
+# real  236m54.276s
+# user  143m33.234s
+# sys 1m2.499s
+
+
+# Currently running on my laptop:
 
 
 # $ python nearest_neighbor.py 
