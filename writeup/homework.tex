@@ -33,18 +33,27 @@ SVM and Random Forests. We started with Logistic Regression for a few reasons.
 (2) Even after feature selection, one-hot encoding resulted in 
 many features. This initially made us wary of decision trees which if done 
 incorrectly can overfit the training data.
-(3) In our exploratory phase we found a number of features with high conditional probabilities of “y given x” and this is what 
-logistic regression models.
-(4) At the onset we wanted to establish a baseline classifier and logistic regression is simple in that the model assumes a single linear 
+(3) At the onset we wanted to establish a baseline classifier and logistic regression is simple in that the model assumes a single linear 
 decision boundary. 
+
+Figure \# contains a plot of C ($1/\lambda$, where $\lambda$ is the regularization term) on the horizontal axis and hold out accuracy on the vertical axis.
+It is clear from this plot that for a sufficiently large value of C, meaning the model is not too influenced by regularization,
+the classifier plateaus with respect to accuracy. For a baseline this was not too bad but the results pushed us
+to consider non-linear models. 
 
 We also experimented with SVM, using both linear and Gaussian (RBF) kernels. We 
 focused our effort on the RBF kernel because (1) our available training set had more 
 than 100,000 observations and we only had around 500 features after one-hot 
-encoding and (2) . The results were satisfactory with an error rate slightly below 
+encoding and (2) the results were satisfactory with an error rate slightly below 
 our final classifier but the iteration cycle was too long. Some actions we could have 
 taken to shrink the iteration cycle are (1) focus on linear kernel and (2) drastically 
 shrink the training set.
+
+Figure \# contains a plot of C (error penalty) on the horizontal axis and hold out accuracy on the vertical axis.
+A small value of C tends toward simple decision boundaries while a high value of C (depending on the data) tends toward complicated
+decision boundaries. This occurs because C imposes a penalty on misclassifying training samples.
+The figure shows that a higher C (at least until C=1000) and more complicated decision boundary actually reflect the overall data
+and not just the idiosynchracies of the training samples.
 
 We then turned to ensemble methods. We quickly tried AdaBoost with Decision 
 Trees of depth 1 as the weak learner but the results were only slightly better than 
