@@ -36,7 +36,7 @@ incorrectly can overfit the training data.
 (3) At the onset we wanted to establish a baseline classifier and logistic regression is simple in that the model assumes a single linear 
 decision boundary. 
 
-Figure \# contains a plot of C ($1/\lambda$, where $\lambda$ is the regularization term) on the horizontal axis and hold out accuracy on the vertical axis.
+Figure 1 contains a plot of C ($1/\lambda$, where $\lambda$ is the regularization term) on the horizontal axis and hold out accuracy on the vertical axis.
 It is clear from this plot that for a sufficiently large value of C, meaning the model is not too influenced by regularization,
 the classifier plateaus with respect to accuracy. For a baseline this was not too bad but the results pushed us
 to consider non-linear models. 
@@ -49,7 +49,7 @@ our final classifier but the iteration cycle was too long. Some actions we could
 taken to shrink the iteration cycle are (1) focus on linear kernel and (2) drastically 
 shrink the training set.
 
-Figure \# contains a plot of C (error penalty) on the horizontal axis and hold out accuracy on the vertical axis.
+Figure 1 contains a plot of C (error penalty) on the horizontal axis and hold out accuracy on the vertical axis.
 A small value of C tends toward simple decision boundaries while a high value of C (depending on the data) tends toward complicated
 decision boundaries. This occurs because C imposes a penalty on misclassifying training samples.
 The figure shows that a higher C (at least until C=1000) and more complicated decision boundary actually reflect the overall data
@@ -67,5 +67,6 @@ Forest performed on par with SVM, but unlike SVM the runtime is fast and provide
 us with short iteration cycles to tune a few parameters.
 
 \includegraphics[scale=0.5]{classifiers_comparison_1.jpeg}
+Figure 1.
 
 \end{document} 
