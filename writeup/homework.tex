@@ -11,7 +11,7 @@
 \section*{Introduction}
 
 In this brief report we describe the methodology we followed for the in-class Predictive Modeling Competition for COMS 4721, Spring 2016. We developed a binary classifier with an error rate of approximately $5\%$ which performed well in the competition. We chose to completely ignore the domain semantics of the data and our feature selection was solely based on the
-characteristics of the input data, including their variance and correlation. In addition to Random Forests, we also tried Logistic Regression, Support Vector Machines, and AdaBoost with Decision Tree as the weak classifier. All classifiers performed relatively well but Random Forest was chosen for its stability and speed. This report is divided in four parts. First we describe the feature selection procedure, then we continue with the comparison of various classifiers, we proceed with the tunning of the winning classifier, and finally we report the results we achieved. 
+characteristics of the input data, including their variance and correlation. In addition to Random Forests, we also tried Logistic Regression, Support Vector Machines, and AdaBoost with Decision Tree as the weak classifier. All classifiers performed relatively well but Random Forest was chosen for its stability and speed. This report is divided in four parts. First we describe the feature selection procedure, then we continue with the comparison of various classifiers, we proceed with the tuning of the winning classifier, and finally we report the results we achieved. 
 
 
 \section*{Feature Selection}
@@ -29,14 +29,16 @@ The reduction of the initial number of columns had significant impact in the ana
 
 We considered three major classes of models in our research: Logistic Regression,
 SVM and Random Forests. We started with Logistic Regression for a few reasons.
-(1) The algorithm is fast, e.g. compared to SVM.
+(1) The algorithm is fast, e.g. compared to SVM which has cubic running time with respect to the size of the training set.
 (2) Even after feature selection, one-hot encoding resulted in 
 many features. This initially made us wary of decision trees which if done 
 incorrectly can overfit the training data.
 (3) At the onset we wanted to establish a baseline classifier and logistic regression is simple in that the model assumes a single linear 
 decision boundary. 
 
-Figure 1 contains a plot of C ($1/\lambda$, where $\lambda$ is the regularization term) on the horizontal axis and hold out accuracy on the vertical axis.
+The plot in figure 1 contains a comparison of the different algorithms we evaluated. 
+For Logistic Regression we plot C ($1/\lambda$, where $\lambda$ is the regularization term) on the horizontal axis and hold out accuracy on the vertical axis.
+Each point on the plot for Logistic Regression represents the average of runs with 100,000 randomized training points and 25,000 test points.
 It is clear from this plot that for a sufficiently large value of C, meaning the model is not too influenced by regularization,
 the classifier plateaus with respect to accuracy. For a baseline this was not too bad but the results pushed us
 to consider non-linear models. 
@@ -49,24 +51,78 @@ our final classifier but the iteration cycle was too long. Some actions we could
 taken to shrink the iteration cycle are (1) focus on linear kernel and (2) drastically 
 shrink the training set.
 
-Figure 1 contains a plot of C (error penalty) on the horizontal axis and hold out accuracy on the vertical axis.
+For SVM figure 1 contains a plot of C (error penalty) on the horizontal axis and hold out accuracy on the vertical axis.
+Each point on the plot for SVM represents the average of runs with 75,000 randomized training points and 25,000 test points.
 A small value of C tends toward simple decision boundaries while a high value of C (depending on the data) tends toward complicated
 decision boundaries. This occurs because C imposes a penalty on misclassifying training samples.
 The figure shows that a higher C (at least until C=1000) and more complicated decision boundary actually reflect the overall data
 and not just the idiosynchracies of the training samples.
 
+\includegraphics[scale=0.5]{classifiers.png}
+\\
+Figure 1.
+\\
+\\
 We then turned to ensemble methods. We quickly tried AdaBoost with Decision 
 Trees of depth 1 as the weak learner but the results were only slightly better than 
 Logistic Regression and definitely worse than SVM. We then turned to Random 
 Forests which are ensembles of Decision Trees. What drew us to Random Forests is 
 how it uses randomness. Unlike Decision Trees which use all features to make a split 
-decision, Random Forests only consider a random subset (of size k, eg 
-k=sqrt(number features)) of features at each split decision up to . This gave us the 
-power to test different subsets of features, albeit implicitly. From the start Random 
+decision, Random Forests only consider a random subset of features at each split decision up to .
+This gave us the power to test different subsets of features, albeit implicitly. From the start Random 
 Forest performed on par with SVM, but unlike SVM the runtime is fast and provided 
-us with short iteration cycles to tune a few parameters.
+us with short iteration cycles to tune a few parameters. 
 
-\includegraphics[scale=0.5]{classifiers.png}
-Figure 1.
+For Random Forests each point in figure 1 represents the average of runs with 100,000 randomized 
+training points and 25,000 test points. In figure 1 we can see that Random Forests perform better and more
+consistently than the other algorithms we considered. Random Forests offer a number of parameters with which 
+to tune the model. We will examine some of those in more detail. 
+
+\section*{Model Tuning and Evaluation}
+
+Figure 2 shows what happens to accuracy, precision, 
+and recall on a holdout set as we increased the minimum number of samples required in a leaf node (min\_samples\_leaf) in any 
+Decision Tree learned by the algorithm. Intuitively, the lower this number the more details the algorithm can learn 
+from the training data. This is similar to increasing the C parameter to SVM to learn a more complicated decision boundary.
+This experiment shows that having a small min\_samples\_leaf actually provides a improved accuracy, precision and recall.
+Figure 3 shows what happens to accuracy, precision and recall on a holdout set as we increased the minimum number of
+samples required in an internal node to split the samples further of any Decision Tree (min\_samples\_split) in the Random Forest.
+Again, we found maintaining min\_samples\_split at relatively low value produced the best results across the board for these three metrics.
+\\
+\\
+\includegraphics[scale=0.5]{min_leaf.png}
+\\
+Figure 2.
+\\
+\\
+\includegraphics[scale=0.5]{min_split.png}
+\\
+Figure 3.
+\\
+
+Finally, figure 4 shows what happens to accuracy, precision and recall on a holdout set as we increased the 
+number of individual Decision Trees used in the Random Forest (n\_estimators). Since each Decision Tree trains
+over a random set of features, increasing the number of underlying classifiers and hence the total number of features
+used in the Random Forest allows the algorithm to capture more variance. The decision of how many features to include
+in the Random Forest is controlled by the max\_features parameter. We tried setting this parameter from the default of the square
+root of the total number of features (23 in our case) to the log$_2$ of the total number of features (9 in our case)
+but the metrics we observed did not vary by much (see figure 1). 
+\\
+\\
+\includegraphics[scale=0.5]{n_estimators.png}
+\\
+Figure 4.
+\\
+
+%\begin{figure}
+%\begin{tabular}{cc}
+%\includegraphics[width=65mm]{min_leaf.png} &   \includegraphics[width=65mm]{min_split.png} \\
+%Figure 2. & Figure 3. \\[6pt]
+%\multicolumn{2}{c}{\includegraphics[width=65mm]{n_estimators.png} }\\
+%\multicolumn{2}{c}{Figure 4.}
+%\end{tabular}
+%\end{figure}
+
+The classifier we used for our official submission in the Kaggle competition achieved an accuracy of 94.6\%.
 
 \end{document} 
