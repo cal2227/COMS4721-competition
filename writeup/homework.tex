@@ -47,7 +47,9 @@ We also experimented with SVM, using both linear and Gaussian (RBF) kernels. We
 focused our effort on the RBF kernel because (1) our available training set had more 
 than 100,000 observations and we only had around 500 features after one-hot 
 encoding and (2) the results were satisfactory with an error rate slightly below 
-our final classifier but the iteration cycle was too long. Some actions we could have 
+our final classifier. SVM, especially with RBF kernel, had a runtime on the order of a few hours to train
+and test an individual model. This long iteration cycle made experimenting with different feature sets, feature transformations 
+and different parameters nearly debilitating. Some actions we could have 
 taken to shrink the iteration cycle are (1) focus on linear kernel and (2) drastically 
 shrink the training set.
 
@@ -68,7 +70,8 @@ Trees of depth 1 as the weak learner but the results were only slightly better t
 Logistic Regression and definitely worse than SVM. We then turned to Random 
 Forests which are ensembles of Decision Trees. What drew us to Random Forests is 
 how it uses randomness. Unlike Decision Trees which use all features to make a split 
-decision, Random Forests only consider a random subset of features at each split decision up to .
+decision, Random Forests only consider a random subset of features at each split decision up to
+a constant and identical number for each tree.
 This gave us the power to test different subsets of features, albeit implicitly. From the start Random 
 Forest performed on par with SVM, but unlike SVM the runtime is fast and provided 
 us with short iteration cycles to tune a few parameters. 
@@ -83,7 +86,8 @@ to tune the model. We will examine some of those in more detail.
 Figure 2 shows what happens to accuracy, precision, 
 and recall on a holdout set as we increased the minimum number of samples required in a leaf node (min\_samples\_leaf) in any 
 Decision Tree learned by the algorithm. Intuitively, the lower this number the more details the algorithm can learn 
-from the training data. This is similar to increasing the C parameter to SVM to learn a more complicated decision boundary.
+from the training data. This is similar to increasing the C parameter to SVM to learn a more complicated decision boundary
+but not just at the boundary.
 This experiment shows that having a small min\_samples\_leaf actually provides a improved accuracy, precision and recall.
 Figure 3 shows what happens to accuracy, precision and recall on a holdout set as we increased the minimum number of
 samples required in an internal node to split the samples further of any Decision Tree (min\_samples\_split) in the Random Forest.
